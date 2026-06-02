@@ -3,39 +3,33 @@ name: Coderco Combined
 on: [push]
 
 jobs:
-  Build: 
+  Build:
     runs-on: ubuntu-latest
 
-    strategy: 
-      matrix: 
+    strategy:
+      matrix:
         python-version: [3.7, 3.8, 3.9]
 
-
     steps:
-    - name: checkout code
-      uses: actions/checkout@v2
+      - name: checkout code
+        uses: actions/checkout@v4
 
+      - name: setup python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: setup python
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{matrix.python-version}}
+      - name: install dependencies
+        run: 
+          cd chapter4
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: install dependencies
-      run:
-        cd chapter4
-        python -m pip install --upgrade pip
-        if [-f requirement.txt ]; then pip install -r requirement.txt;
+      - name: run test
+        run: 
+          cd chapter4
+          python -m unittest discover
 
-
-    - name: run test
-      run: 
-        cd chapter4 
-        python -m unittest discover
-
-    - name: notify us of success
-      run: echo "Test passed on python ${{matrix.python-version}}"
-      if: success()
-
-
-        
+      - name: notify us of success
+        run: echo "Test passed on python ${{ matrix.python-version }}"
+        if: success()
