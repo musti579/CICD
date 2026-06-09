@@ -13,7 +13,7 @@ jobs:
 
 
   - name: hello world custom actions
-    uses: Coderco-custom/CoderCo custom@main
+    uses: musti579/Coderco-custom@main
     with:
       who-to-greet: 'CoderCo team'
 
